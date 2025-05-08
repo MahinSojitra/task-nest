@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center fs-3 fw-bold" href="#">
+      <i class="bi bi-check-circle-fill me-2 text-success"></i> Task Nest
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" routerLinkActive="active" #rlaDashboard="routerLinkActive">
+          <a class="nav-link px-3 d-flex flex-column align-items-center" routerLink="/">
+            <i [ngClass]="rlaDashboard.isActive ? 'bi bi-house-door-fill fs-5' : 'bi bi-house-door fs-5'"></i>
+            <span class="small">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" #rlaTasks="routerLinkActive">
+          <a class="nav-link px-3 d-flex flex-column align-items-center" routerLink="/tasks">
+            <i [ngClass]="rlaTasks.isActive ? 'bi bi-list-check fs-5' : 'bi bi-list fs-5'"></i>
+            <span class="small">Tasks</span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" #rlaSettings="routerLinkActive">
+          <a class="nav-link px-3 d-flex flex-column align-items-center" routerLink="/settings">
+            <i [ngClass]="rlaSettings.isActive ? 'bi bi-gear-fill fs-5' : 'bi bi-gear fs-5'"></i>
+            <span class="small">Settings</span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" #rlaProfile="routerLinkActive">
+          <a class="nav-link px-3 d-flex flex-column align-items-center" routerLink="/profile">
+            <i [ngClass]="rlaProfile.isActive ? 'bi bi-person-fill fs-5' : 'bi bi-person fs-5'"></i>
+            <span class="small">Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

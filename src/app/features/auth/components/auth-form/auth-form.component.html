@@ -1,0 +1,152 @@
+<div class="container-fluid d-flex justify-content-center align-items-center position-relative overflow-hidden"
+  style="min-height: 100vh;">
+  <!-- Background Decorative Images -->
+  <img src="assets/notes.png" class="position-absolute bg-decor-1" alt="Decor 1">
+  <img src="assets/sign-up.png" class="position-absolute bg-decor-2" alt="Decor 2">
+  <img src="assets/task-notes.png" class="position-absolute bg-decor-3" alt="Decor 3">
+  <img src="assets/task-check-list.png" class="position-absolute bg-decor-4" alt="Decor 4">
+
+  <!-- Main Container with Flex Columns -->
+  <div class="container-fluid row justify-content-center align-items-center" style="min-height: 100vh;">
+
+    <!-- About Section (Hide on small screens) -->
+    <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center bg-transparent p-5">
+      <div class="text-start">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        <h2 class="mt-1 fw-bold">Task Nest</h2>
+        <p class="mt-4 text-muted" style="font-size: 1rem;">
+          Task Nest is your all-in-one productivity partner, crafted to simplify the way individuals and teams manage
+          their
+          tasks and projects.
+          We believe that staying organized shouldn’t feel like a chore — that’s why we’ve built a clean, intuitive
+          platform
+          that’s as powerful as it is easy to use.
+          <br><br>
+          Whether you’re planning your day, collaborating with a team, or juggling multiple deadlines, Task Nest offers
+          smart
+          tools that adapt to your workflow.
+          From setting goals and reminders to tracking progress and prioritizing what matters most, our system helps you
+          stay
+          focused and in control.
+          <br><br>
+          Join thousands of users who trust Task Nest to bring clarity to their work and life — because productivity
+          should feel
+          natural, not overwhelming.
+        </p>
+      </div>
+    </div>
+
+    <!-- Login/Register Form (Always visible, full-width on mobile) -->
+    <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4 p-4 p-md-5">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-4 border border-1 rounded shadow-sm bg-transparent">
+
+        <!-- Form Header -->
+        <div class="text-center mb-4">
+          <h1>{{ mode === 'login' ? 'Welcome back!' : 'Welcome' }}</h1>
+          <p class="text-muted" style="font-size: 0.875rem;">
+            {{ mode === 'login' ? 'Sign in to your account.' : 'Create an account to get started.' }}
+          </p>
+        </div>
+
+        <!-- Name (Register Mode) -->
+        <div *ngIf="mode === 'register'" class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input id="name" formControlName="name" type="text" class="form-control" placeholder="Enter your name"
+            [ngClass]="{'is-invalid': name?.invalid && name?.touched}">
+          <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+            <div *ngIf="name?.errors?.['required']">Name is required.</div>
+          </div>
+          <div *ngIf="formErrors.name" class="text-danger small mt-1">
+            {{ formErrors.name }}
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" formControlName="email" type="email" class="form-control" placeholder="Enter your email"
+            autocomplete="email" [ngClass]="{'is-invalid': email?.invalid && email?.touched }">
+          <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+            <div *ngIf="email?.errors?.['required']">Email is required.</div>
+            <div *ngIf="email?.errors?.['email']">Please enter a valid email address.</div>
+          </div>
+          <div *ngIf="formErrors.email" class="text-danger small mt-1">
+            {{ formErrors.email }}
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input id="password" formControlName="password" type="password" class="form-control"
+            placeholder="Enter your password" autocomplete="current-password"
+            [ngClass]="{'is-invalid': password?.invalid && password?.touched }">
+          <div *ngIf="password?.invalid && password?.touched" class="invalid-feedback">
+            <div *ngIf="password?.errors?.['required']">Password is required.</div>
+            <div *ngIf="password?.touched && password?.invalid">
+              <div *ngIf="password?.errors?.['minlength']; else patternError">
+                Password must be at least 6 characters long.
+              </div>
+              <ng-template #patternError>
+                <div *ngIf="password?.errors?.['pattern']">
+                  Password must contain at least one uppercase letter, one lowercase letter, one number, and one special
+                  character [!, @, #, $, %, ^, &, *].
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div *ngIf="formErrors.password" class="text-danger small mt-1">
+            {{ formErrors.password }}
+          </div>
+        </div>
+
+        <!-- Confirm Password (Register Mode) -->
+        <div *ngIf="mode === 'register'" class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-control"
+            placeholder="Confirm your password" autocomplete="confirm-password"
+            [ngClass]="{'is-invalid': (confirmPassword?.invalid || form.errors?.['passwordMismatch']) && confirmPassword?.touched }">
+          <div *ngIf="confirmPassword?.touched" class="invalid-feedback d-block">
+            <div *ngIf="confirmPassword?.errors?.['required']; else mismatchError">
+              Please confirm your password.
+            </div>
+            <ng-template #mismatchError>
+              <div *ngIf="form.errors?.['passwordMismatch']">
+                Passwords do not match.
+              </div>
+            </ng-template>
+          </div>
+          <div *ngIf="formErrors.confirmPassword" class="text-danger small mt-1">
+            {{ formErrors.confirmPassword }}
+          </div>
+        </div>
+
+        <div *ngIf="formErrors.general" class="text-danger small mt-3 mb-0">
+          {{ formErrors.general }}
+        </div>
+
+        <!-- Submit -->
+        <button class="btn btn-success w-100 mt-3" type="submit" [disabled]="form.invalid || loading">
+          <span *ngIf="!loading">
+            {{ mode === 'login' ? 'Sign In' : 'Create Account' }}
+          </span>
+          <span *ngIf="loading">
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            {{ mode === 'login' ? 'Signing in...' : 'Creating account...' }}
+          </span>
+        </button>
+
+        <!-- Mode Switch -->
+        <div class="text-center mt-3">
+          <small class="text-muted">
+            {{ mode === 'login' ? "Don't have an account?" : 'Already have an account?' }}
+            <a class="text-decoration-none ms-1" [routerLink]="[mode === 'login' ? '/auth/register' : '/auth/login']"
+              (click)="toggleMode()">
+              {{ mode === 'login' ? 'Register' : 'Sign In' }}
+            </a>
+          </small>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
