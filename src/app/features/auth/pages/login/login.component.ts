@@ -35,8 +35,6 @@ export class LoginComponent {
       error: (error) => {
         this.loading = false;
 
-        console.error('Login error occurred:', error);
-
         if (error.status === 0) {
           this.formErrors.general = 'No internet connection.';
         } else if (error.status === 400 || error.status === 401) {
@@ -70,7 +68,6 @@ export class LoginComponent {
           this.formErrors.general = 'Something went wrong. Please try again later.';
         }
 
-        console.log('Login error:', this.formErrors);
       },
       complete: () => {
         this.loading = false;

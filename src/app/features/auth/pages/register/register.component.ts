@@ -24,10 +24,8 @@ export class RegisterComponent {
     this.authService.register(formData).subscribe({
       next: (response: RegisterResponse) => {
         if (response.success) {
-          console.log('Registration successful:', response.message);
           this.route.navigate(['/login']);
         } else {
-          console.log('Registration failed:', response.message);
           this.route.navigate(['/register']);
         }
       },
