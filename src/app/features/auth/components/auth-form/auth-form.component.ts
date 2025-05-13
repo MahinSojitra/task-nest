@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { emailAvailabilityValidator } from 'src/app/core/validators/email-availability.validator';
 
 @Component({
   selector: 'app-auth-form',
@@ -21,7 +23,7 @@ export class AuthFormComponent implements OnChanges {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = this.buildForm();
   }
 
@@ -41,12 +43,21 @@ export class AuthFormComponent implements OnChanges {
     }
 
     const group: any = {
-      email: ['', [Validators.required, Validators.email]],
       password: ['', passwordValidators],
     };
 
     if (this.mode === 'register') {
-      group['name'] = ['', Validators.required];
+      group['email'] = [
+        '',
+        [Validators.required, Validators.email],
+        [emailAvailabilityValidator(this.http)]
+      ];
+    } else {
+      group['email'] = ['', [Validators.required, Validators.email]];
+    }
+
+    if (this.mode === 'register') {
+      group['name'] = ['', [Validators.required, Validators.minLength(3)]];
       group['confirmPassword'] = ['', Validators.required];
     }
 

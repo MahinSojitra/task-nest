@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RegisterRequest, RegisterResponse } from 'src/app/models/register.model';
+import { RegisterRequest, RegisterResponse } from 'src/app/core/models/register.model';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -58,7 +58,7 @@ export class RegisterComponent {
         } else if (error.status === 429) {
           this.formErrors.general = 'Too many login attempts. Please wait and try again.';
         } else {
-          this.formErrors.general = 'Something went wrong. Please try again later.';
+          this.formErrors.general = 'Something went wrong in creating your account. Please try again later.';
         }
       },
       complete: () => {

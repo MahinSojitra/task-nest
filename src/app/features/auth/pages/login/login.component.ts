@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginRequest, LoginResponse } from 'src/app/models/login.model';
+import { LoginRequest, LoginResponse } from 'src/app/core/models/login.model';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -26,7 +26,6 @@ export class LoginComponent {
     this.authService.login(formData).subscribe({
       next: (response: LoginResponse) => {
         if (response.success) {
-          this.authService.storeTokens(response.data.tokens);
           this.router.navigate(['/']);
         } else {
           this.formErrors.general = response.message || 'Login failed.';
