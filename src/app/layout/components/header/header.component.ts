@@ -11,6 +11,7 @@ export class HeaderComponent implements OnDestroy {
 
   isLoggedIn = false;
   userName = '';
+  userEmail = '';
   private destroy$ = new Subject<void>();
 
   constructor(private authService: AuthService) {}
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnDestroy {
       .subscribe((status) => {
         this.isLoggedIn = status;
         this.userName = this.authService.getUserName();
+        this.userEmail = this.authService.getUserEmail();
       });
   }
 
