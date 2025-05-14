@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { LoginQueryParams } from 'src/app/core/models/query-params.model';
 import { emailAvailabilityValidator } from 'src/app/core/validators/email-availability.validator';
 
 @Component({
@@ -8,7 +10,7 @@ import { emailAvailabilityValidator } from 'src/app/core/validators/email-availa
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss']
 })
-export class AuthFormComponent implements OnChanges {
+export class AuthFormComponent implements OnChanges, OnInit {
 
   @Output() submitForm = new EventEmitter<any>();
   @Input() mode: 'login' | 'register' = 'login';
@@ -22,9 +24,16 @@ export class AuthFormComponent implements OnChanges {
   } = {};
 
   form: FormGroup;
+  queryParams!: LoginQueryParams;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
     this.form = this.buildForm();
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: LoginQueryParams) => {
+      this.queryParams = params;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

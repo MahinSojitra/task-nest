@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './features/auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,11 +8,18 @@ import { AuthService } from './features/auth/services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'task-nest';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.checkLoginStatus();
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'access_encrypted' && event.newValue === null) {
+        this.authService.logout(false);
+        this.router.navigate(['/auth/login'], {
+          queryParams: { sessionExpired: true }
+        });
+      }
+    });
   }
+
 }

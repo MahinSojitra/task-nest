@@ -45,11 +45,12 @@ export class AuthService {
   }
 
   logout(navigate = true): void {
-    // Optionally notify backend
     this.tokenService.clearSession();
     this.isLoggedInSubject.next(false);
     if (navigate) {
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/auth/login'], {
+        queryParams: { loggedOut: true }
+      });
     }
   }
 
