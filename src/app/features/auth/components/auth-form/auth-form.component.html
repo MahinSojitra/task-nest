@@ -41,11 +41,15 @@
 
         <div *ngIf="queryParams.sessionExpired" class="border py-2 px-3 rounded mb-3 bg-light shadow-sm">
           <i class="bi bi-info-circle-fill text-danger me-1"></i>
-          Your session has expired. Please log in again.
+          Your session has expired. Please signin again.
         </div>
         <div *ngIf="queryParams.loggedOut" class="border py-2 px-3 rounded mb-3 bg-light shadow-sm">
           <i class="bi bi-info-circle-fill text-danger me-1"></i>
           You have been logged out.
+        </div>
+        <div *ngIf="queryParams.logInRequired" class="border py-2 px-3 rounded mb-3 bg-light shadow-sm">
+          <i class="bi bi-info-circle-fill text-danger me-1"></i>
+          You have to signin to access your account.
         </div>
 
         <!-- Name (Register only) -->
