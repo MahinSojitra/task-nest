@@ -23,10 +23,12 @@ export class RegisterComponent {
     this.loading = true;
     this.authService.register(formData).subscribe({
       next: (response: RegisterResponse) => {
+        this.loading = false;
+
         if (response.success) {
-          this.route.navigate(['login']);
-        } else {
-          this.route.navigate(['register']);
+          this.route.navigate(['/auth/login'], {
+            queryParams: { accountCreated: true }
+          });
         }
       },
       error: (error) => {
