@@ -1,5 +1,5 @@
 export interface LoginQueryParams {
-  loggedOut?: boolean;
+  signedOut?: boolean;
   sessionExpired?: boolean;
-  logInRequired?: boolean;
+  signInRequired?: boolean;
 }

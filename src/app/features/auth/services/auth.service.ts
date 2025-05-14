@@ -49,7 +49,7 @@ export class AuthService {
     this.isLoggedInSubject.next(false);
     if (navigate) {
       this.router.navigate(['/auth/login'], {
-        queryParams: { loggedOut: true }
+        queryParams: { signedOut: true }
       });
     }
   }
