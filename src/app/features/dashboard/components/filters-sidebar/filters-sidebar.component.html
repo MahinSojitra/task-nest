@@ -1,0 +1,46 @@
+<div class="card shadow-sm rounded-4">
+  <div class="card-body">
+    <div class="mb-3">
+      <h5 class="mb-0 text-success">
+        <i class="bi bi-funnel-fill me-2"></i>Filters
+      </h5>
+      <small class="text-muted">
+        Refine your tasks quickly.
+      </small>
+    </div>
+
+    <div class="bg-light p-3 rounded-3 border">
+      <div class="mb-3">
+        <label for="statusSelect" class="form-label fw-semibold text-muted small">Filter by Status</label>
+        <select id="statusSelect" class="form-select border rounded-3" [(ngModel)]="selectedStatus">
+          <option value="">All</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <!-- Tags Filter -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold text-muted small">Filter by Tags</label>
+        <div class="d-flex flex-wrap gap-2">
+          <span *ngFor="let tag of tags" class="badge border border-success rounded-pill px-2 py-1 small fw-medium"
+            role="button" (click)="applyFilter(tag)" [ngClass]="{
+                    'bg-success text-white border-success': selectedTags.includes(tag),
+                    'bg-light text-success': !selectedTags.includes(tag)
+                  }" style="transition: all 0.2s ease-in-out; cursor: pointer;">
+            {{ tag }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Clear Filters Button -->
+      <div class="text-end">
+        <button class="btn btn-danger btn-sm rounded-pill" (click)="clearFilters()">
+          <i class=" bi bi-x-circle me-1"></i>Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

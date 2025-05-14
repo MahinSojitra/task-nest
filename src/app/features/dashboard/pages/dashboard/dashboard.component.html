@@ -1,0 +1,86 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-lg-3 mb-4">
+      <app-filters-sidebar></app-filters-sidebar>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-lg-9">
+      <h2 class="mb-2 text-success">
+        <i class="bi bi-clipboard-data me-1"></i>
+        Your Tasks
+      </h2>
+
+      <p class="text-muted mb-4">
+        View and manage your tasks with ease. Use the filters on the left to sort by priority, status, or deadline.
+      </p>
+
+      <div class="row g-3">
+        <!-- Show total tasks -->
+        <ng-container *ngIf="!isLoading; else skeletonContent">
+          <div class="col-12">
+            <div class="card shadow-sm rounded-4 border-start border-1">
+              <div class="card-body justify-content-start align-items-center">
+                <div>
+                  <h5 class="mb-0 text-success">Total Tasks</h5>
+                  <p class="mb-0 fw-semibold text-dark">
+                    You have total <span class="text-success">{{ totalTasks }}</span> tasks in your list.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Skeleton while loading -->
+        <ng-template #skeletonContent>
+          <div class="col-12">
+            <div class="card shadow-sm rounded-4 placeholder-glow">
+              <div class="card-body align-items-center">
+                <div class="w-100">
+                  <span class="placeholder col-6 mb-2 d-block"></span>
+                  <span class="placeholder col-8 d-block"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-container *ngIf="isLoading; else taskList">
+          <div class="col-md-6 col-xl-5" *ngFor="let _ of skeletonArray">
+            <app-skeleton-task-card></app-skeleton-task-card>
+          </div>
+        </ng-container>
+
+        <!-- Actual task list -->
+        <ng-template #taskList>
+          <ng-container *ngIf="tasks.length > 0; else noTasks">
+            <div class="col-md-6 col-xl-5" *ngFor="let task of tasks">
+              <app-task-card [task]="task"></app-task-card>
+            </div>
+          </ng-container>
+        </ng-template>
+
+        <!-- No Tasks Message -->
+        <ng-template #noTasks>
+          <div class="col-12">
+            <div class="p-4">
+              <div class="d-flex flex-column py-3">
+                <i class="bi bi-box fs-1 text-muted mb-1"></i>
+                <h5 class="mb-1">No tasks available</h5>
+                <small class="text-muted">
+                  Please add some tasks to get started.
+                </small>
+              </div>
+              <button class="btn btn-success btn-sm rounded-pill">
+                <i class="bi bi-plus-circle me-1"></i>
+                Add Task
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { RefreshResponse } from '../models/token-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +12,9 @@ import { environment } from 'src/environments/environment';
 export class TokenService {
   private readonly STORAGE_KEY = 'access_encrypted';
   private readonly SECRET = environment.encryptionSecret;
+  private readonly REFRESH_URL = environment.apiUrl + '/users/refresh';
+
+  constructor(private http: HttpClient) {}
 
   setSession(tokens: { accessToken: string; refreshToken: string }, name: string, email: string): void {
     const payload = JSON.stringify({
@@ -58,5 +65,59 @@ export class TokenService {
 
   getRefreshToken(): string | null {
     return this.getDecryptedPayload()?.refreshToken || null;
+  }
+
+  refreshAccessToken(): Observable<{ accessToken: string; refreshToken: string }> {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('No refresh token available');
+    }
+
+    return this.http
+      .post<RefreshResponse>(this.REFRESH_URL, null, {
+        headers: {
+          'x-refresh-token': refreshToken,
+        },
+      })
+      .pipe(
+        map((response: RefreshResponse) => {
+          if (response.success && response.data?.tokens) {
+            return response.data.tokens;
+          }
+          throw new Error('Invalid token response format');
+        }),
+        catchError((error) => {
+          console.error('Refresh token failed:', error);
+          this.clearSession();
+          throw error;
+        })
+      );
+  }
+
+  checkAndRefreshToken(): Observable<any> {
+    const accessToken = this.getAccessToken();
+    if (!accessToken) {
+      throw new Error('No access token available');
+    }
+
+    const decoded = this.decodeToken(accessToken);
+    const expirationTime = decoded.exp * 1000;
+    const currentTime = Date.now();
+
+    if (currentTime >= expirationTime) {
+      return this.refreshAccessToken().pipe(
+        catchError((error) => {
+          console.error('Error refreshing token:', error);
+          throw error;
+        })
+      );
+    }
+
+    return new Observable();
+  }
+
+  private decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
   }
 }

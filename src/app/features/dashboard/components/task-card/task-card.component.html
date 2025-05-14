@@ -1,0 +1,57 @@
+<div class="card shadow-sm rounded-4 h-100">
+  <div class="card-body d-flex flex-column">
+    <!-- Header: Time Ago and Title -->
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <div>
+        <p *ngIf="task.updatedAt" class="text-muted small mb-0">
+          <i class="bi bi-clock-history me-1"></i>{{ task.updatedAt | timeAgo }}
+        </p>
+      </div>
+
+      <div>
+        <p class="mb-0">
+          <span class="badge px-2 py-1 rounded-pill bg-light ms-2 small border" [ngClass]="{
+              'text-success': task.status === 'completed',
+              'text-muted': task.status === 'active',
+              'text-warning': task.status === 'pending',
+              'text-danger': task.status === 'cancelled'
+            }">
+            {{ task.status | titlecase }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-success fw-bold mb-0">
+      {{ task.title | truncateText: 25 }}
+    </h3>
+
+    <!-- Description -->
+    <div class="mb-2">
+      <p class="text-secondary small mb-0">
+        {{ task.description | truncateText: 100 }}
+      </p>
+    </div>
+
+    <!-- Task Details -->
+    <div class="mb-2 small">
+      <p class="mb-1 text-muted">
+        <i class="bi bi-calendar3-range-fill text-black me-1"></i>
+        {{ task.dueDate | timeRemaining }}.
+      </p>
+    </div>
+
+    <!-- This container pushes the tag section to the bottom -->
+    <div class="mt-auto">
+      <hr class="my-1" />
+      <div class="mt-2 d-flex flex-wrap gap-1">
+        <ng-container *ngFor="let tag of task.tags">
+          <span class="badge border border text-primary fw-semibold">
+            {{ tag }}
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
