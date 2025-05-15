@@ -3,10 +3,10 @@ import { AuthService } from 'src/app/features/auth/services/auth.service';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  templateUrl: './account-settings.component.html',
+  styleUrls: ['./account-settings.component.scss']
 })
-export class ProfileComponent {
+export class AccountSettingsComponent {
   userName: string = '';
   userEmail: string = '';
 

@@ -10,7 +10,14 @@ import { FiltersSidebarComponent } from './components/filters-sidebar/filters-si
 import { FormsModule } from '@angular/forms';
 import { TimeRemainingPipe } from 'src/app/shared/pipes/time-remaining.pipe';
 import { SkeletonTaskCardComponent } from './components/skeleton-task-card/skeleton-task-card.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { ProfileOverviewComponent } from './pages/profile-overview/profile-overview.component';
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { RouterModule } from '@angular/router';
+import { AccountSettingsComponent } from './pages/account-settings/account-settings.component';
+import { ActiveSessionsComponent } from './pages/active-sessions/active-sessions.component';
+import { SessionCardComponent } from './components/session-card/session-card.component';
+import { SkeletonSessionCardComponent } from './components/skeleton-session-card/skeleton-session-card.component';
 
 
 @NgModule({
@@ -22,12 +29,19 @@ import { ProfileComponent } from './pages/profile/profile.component';
     TimeRemainingPipe,
     FiltersSidebarComponent,
     SkeletonTaskCardComponent,
-    ProfileComponent
+    AccountSettingsComponent,
+    ProfileOverviewComponent,
+    EditProfileComponent,
+    ChangePasswordComponent,
+    ActiveSessionsComponent,
+    SessionCardComponent,
+    SkeletonSessionCardComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ]
 })
 export class DashboardModule { }
