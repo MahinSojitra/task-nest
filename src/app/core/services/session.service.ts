@@ -6,10 +6,10 @@ import { environment } from 'src/environments/environment';
 import { SessionResponse, Session } from '../models/session.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService implements OnDestroy {
-  private apiUrl = environment.apiUrl + '/users/sessions';
+  private apiUrl = environment.apiUrl + '/auth/sessions';
 
   private sessionsSubject = new BehaviorSubject<Session[] | null>(null);
   private refreshSubscription?: Subscription;
@@ -24,9 +24,9 @@ export class SessionService implements OnDestroy {
 
   private fetchSessions(): Observable<Session[]> {
     return this.http.get<SessionResponse>(this.apiUrl).pipe(
-      tap(res => this.sessionsSubject.next(res.data.sessions)),
-      switchMap(res => of(res.data.sessions)),
-      catchError(error => {
+      tap((res) => this.sessionsSubject.next(res.data.sessions)),
+      switchMap((res) => of(res.data.sessions)),
+      catchError((error) => {
         console.error('Error fetching sessions', error);
         this.sessionsSubject.next([]);
         return of([]);

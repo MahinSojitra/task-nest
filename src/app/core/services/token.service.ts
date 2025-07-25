@@ -12,11 +12,15 @@ import { RefreshResponse } from '../models/token-response.model';
 export class TokenService {
   private readonly STORAGE_KEY = 'access_encrypted';
   private readonly SECRET = environment.encryptionSecret;
-  private readonly REFRESH_URL = environment.apiUrl + '/users/refresh';
+  private readonly REFRESH_URL = environment.apiUrl + '/auth/refresh';
 
   constructor(private http: HttpClient) {}
 
-  setSession(tokens: { accessToken: string; refreshToken: string }, name: string, email: string): void {
+  setSession(
+    tokens: { accessToken: string; refreshToken: string },
+    name: string,
+    email: string
+  ): void {
     const payload = JSON.stringify({
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
@@ -67,7 +71,10 @@ export class TokenService {
     return this.getDecryptedPayload()?.refreshToken || null;
   }
 
-  refreshAccessToken(): Observable<{ accessToken: string; refreshToken: string }> {
+  refreshAccessToken(): Observable<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
       throw new Error('No refresh token available');
